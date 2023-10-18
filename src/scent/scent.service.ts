@@ -5,6 +5,7 @@ import { UpdateScentDto } from './dto/update-scent.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Flavor } from './entities/flavor.entity.ts';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 
 @Injectable()
 export class ScentService {
@@ -15,10 +16,11 @@ export class ScentService {
     private readonly flavorRepository: Repository<Flavor>,
   ) {}
 
-  async findAll(paginationQuery: object) {
+  async findAll(paginationQuery: PaginationQueryDto) {
     return this.scentRepository.find({
       relations: { flavors: true },
-      ...paginationQuery,
+      skip: paginationQuery.offset,
+      take: paginationQuery.limit,
     });
   }
 

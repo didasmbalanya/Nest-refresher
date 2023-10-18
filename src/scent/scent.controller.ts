@@ -11,13 +11,14 @@ import {
 import { ScentService } from './scent.service';
 import { CreateScentDto } from './dto/create-scent.dto';
 import { UpdateScentDto } from './dto/update-scent.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 
 @Controller('scent')
 export class ScentController {
   constructor(private readonly scentService: ScentService) {}
 
   @Get()
-  async findAll(@Query() paginationQuery) {
+  async findAll(@Query() paginationQuery: PaginationQueryDto) {
     // const { limit, offset } = paginationQuery;
 
     return this.scentService.findAll(paginationQuery);
