@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -16,24 +17,29 @@ export class ScentController {
   constructor(private readonly scentService: ScentService) {}
 
   @Get()
-  findAll(@Query() paginationQuery) {
+  async findAll(@Query() paginationQuery) {
     // const { limit, offset } = paginationQuery;
 
     return this.scentService.findAll(paginationQuery);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id') id: string) {
     return this.scentService.findOne(id);
   }
 
   @Post()
-  create(@Body() createScenteDto: CreateScentDto) {
-    return this.scentService.create(createScenteDto);
+  create(@Body() createScentDto: CreateScentDto) {
+    return this.scentService.create(createScentDto);
   }
 
   @Patch(':id')
-  update(@Body() updateScentDto: UpdateScentDto) {
-    return this.scentService.update(updateScentDto);
+  update(@Param('id') id: string, @Body() updateScentDto: UpdateScentDto) {
+    return this.scentService.update(id, updateScentDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.scentService.remove(id);
   }
 }
