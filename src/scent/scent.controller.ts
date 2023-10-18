@@ -8,7 +8,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { ScentService } from './scent.service';
-import { CreateScentDto } from './dto/create-scent.dto/create-scent.dto';
+import { CreateScentDto } from './dto/create-scent.dto';
+import { UpdateScentDto } from './dto/update-scent.dto';
 
 @Controller('scent')
 export class ScentController {
@@ -18,27 +19,21 @@ export class ScentController {
   findAll(@Query() paginationQuery) {
     // const { limit, offset } = paginationQuery;
 
-    console.log(
-      '\n\n>>>>>>>>>>>>>>>>>>>>>>>> paginationQuery <<<<<<<<<<<<<<<<<<<<<\n\n',
-    );
-    console.log(paginationQuery);
-    console.log('\n\n>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<\n\n');
-
-    return this.scentService.get();
+    return this.scentService.findAll(paginationQuery);
   }
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return id;
+    return this.scentService.findOne(id);
   }
 
   @Post()
   create(@Body() createScenteDto: CreateScentDto) {
-    return createScenteDto;
+    return this.scentService.create(createScenteDto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body) {
-    return { id, ...body };
+  update(@Body() updateScentDto: UpdateScentDto) {
+    return this.scentService.update(updateScentDto);
   }
 }
