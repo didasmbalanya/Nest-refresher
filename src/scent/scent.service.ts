@@ -17,7 +17,9 @@ export class ScentService {
   }
 
   async findOne(id: string) {
-    return this.scentRepository.findOne({ where: { id: +id } });
+    const scent = await this.scentRepository.findOne({ where: { id: +id } });
+    if (!scent) throw new NotFoundException(`Scent #${id} not found`);
+    return scent;
   }
 
   async create(createScenteDto: CreateScentDto) {
