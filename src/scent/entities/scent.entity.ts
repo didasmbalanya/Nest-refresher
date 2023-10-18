@@ -18,6 +18,9 @@ export class Scent {
   @Column()
   brand: string;
 
+  @Column({ default: 0 })
+  recommendations: number;
+
   @JoinTable()
   @ManyToMany(() => Flavor, (flavor) => flavor.scents, { cascade: true }) // insert cascade
   flavors: Flavor[];
