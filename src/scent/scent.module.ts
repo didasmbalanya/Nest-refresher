@@ -8,7 +8,13 @@ import { Event } from 'src/events/entities/event.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Scent, Flavor, Event])],
+  exports: [ScentService],
   controllers: [ScentController],
-  providers: [ScentService],
+  providers: [
+    {
+      provide: ScentService,
+      useClass: ScentService,
+    },
+  ],
 })
 export class ScentModule {}

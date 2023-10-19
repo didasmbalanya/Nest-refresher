@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ScentModule } from './scent/scent.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ScentRatingModule } from './scent-rating/scent-rating.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    ScentRatingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
