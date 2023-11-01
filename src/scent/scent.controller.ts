@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Patch,
   Post,
@@ -12,17 +13,17 @@ import { ScentService } from './scent.service';
 import { CreateScentDto } from './dto/create-scent.dto';
 import { UpdateScentDto } from './dto/update-scent.dto';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
-import { ConfigService } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
+import scentConfig from './config/scent.config';
 
 @Controller('scent')
 export class ScentController {
   constructor(
     private readonly scentService: ScentService,
-    configService: ConfigService,
+    @Inject(scentConfig.KEY)
+    private readonly scentConfiguration: ConfigType<typeof scentConfig>,
   ) {
-    const dbhost = configService.get<string>('DATABASE_HOST');
-
-    console.log(dbhost);
+    console.log(scentConfiguration);
   }
 
   @Get()
