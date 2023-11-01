@@ -5,16 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Scent } from './entities/scent.entity';
 import { Flavor } from './entities/flavor.entity.ts';
 import { Event } from 'src/events/entities/event.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Scent, Flavor, Event])],
+  imports: [TypeOrmModule.forFeature([Scent, Flavor, Event]), ConfigModule],
   exports: [ScentService],
   controllers: [ScentController],
-  providers: [
-    {
-      provide: ScentService,
-      useClass: ScentService,
-    },
-  ],
+  providers: [ScentService],
 })
 export class ScentModule {}

@@ -12,10 +12,18 @@ import { ScentService } from './scent.service';
 import { CreateScentDto } from './dto/create-scent.dto';
 import { UpdateScentDto } from './dto/update-scent.dto';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('scent')
 export class ScentController {
-  constructor(private readonly scentService: ScentService) {}
+  constructor(
+    private readonly scentService: ScentService,
+    configService: ConfigService,
+  ) {
+    const dbhost = configService.get<string>('DATABASE_HOST');
+
+    console.log(dbhost);
+  }
 
   @Get()
   async findAll(@Query() paginationQuery: PaginationQueryDto) {
