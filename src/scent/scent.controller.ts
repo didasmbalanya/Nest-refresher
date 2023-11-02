@@ -15,6 +15,7 @@ import { UpdateScentDto } from './dto/update-scent.dto';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { ConfigType } from '@nestjs/config';
 import scentConfig from './config/scent.config';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('scent')
 export class ScentController {
@@ -26,10 +27,9 @@ export class ScentController {
     console.log(scentConfiguration);
   }
 
+  @Public()
   @Get()
   async findAll(@Query() paginationQuery: PaginationQueryDto) {
-    // const { limit, offset } = paginationQuery;
-
     return this.scentService.findAll(paginationQuery);
   }
 
