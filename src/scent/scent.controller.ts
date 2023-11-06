@@ -17,7 +17,9 @@ import { ConfigType } from '@nestjs/config';
 import scentConfig from './config/scent.config';
 import { Public } from 'src/common/decorators/public.decorator';
 import { ParseIntPipe } from 'src/common/pipes/parse-int.pipe';
+import { ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('scents')
 @Controller('scent')
 export class ScentController {
   constructor(
@@ -28,6 +30,7 @@ export class ScentController {
     console.log(scentConfiguration);
   }
 
+  @ApiForbiddenResponse({ description: 'Forbidden' })
   @Public()
   @Get()
   async findAll(@Query() paginationQuery: PaginationQueryDto) {
