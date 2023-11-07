@@ -34,7 +34,6 @@ export class ScentController {
   @Public()
   @Get()
   async findAll(@Query() paginationQuery: PaginationQueryDto) {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
     return this.scentService.findAll(paginationQuery);
   }
 
