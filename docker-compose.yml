@@ -1,17 +1,10 @@
-version: '3'
+version: "3"
 
 services:
   db:
-    image: postgres
-    restart: always
-    ports:
-      - '5432:5432'
-    environment:
-      - POSTGRES_PASSWORD=pass123
-  test-db:
-    image: postgres
-    restart: always
-    ports:
-    - "5433:5432"
-    environment:
-      - POSTGRES_PASSWORD=pass123
+    image: mongo # container image to be used
+    restart: always 
+    ports: # expose ports in “host:container” format
+      - 27017:27017
+    environment: #env variables to pass into the container
+       MONGODB_DATABASE: nest-course
