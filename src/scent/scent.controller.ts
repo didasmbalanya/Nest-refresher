@@ -6,12 +6,14 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ScentService } from './scent.service';
 import { CreateScentDto } from './dto/create-scent.dto';
 import { UpdateScentDto } from './dto/update-scent.dto';
 import { Public } from '../common/decorators/public.decorator';
 import { ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 
 @ApiTags('scents')
 @Controller('scent')
@@ -21,8 +23,8 @@ export class ScentController {
   @ApiForbiddenResponse({ description: 'Forbidden' })
   @Public()
   @Get()
-  async findAll() {
-    return this.scentService.findAll();
+  async findAll(@Query() pq: PaginationQueryDto) {
+    return this.scentService.findAll(pq);
   }
 
   @Get(':id')
