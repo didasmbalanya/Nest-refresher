@@ -1,15 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+import { Connection, Model } from 'mongoose';
 import { Scent } from './entities/scent.entity';
 import { CreateScentDto } from './dto/create-scent.dto';
 import { UpdateScentDto } from './dto/update-scent.dto';
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { Event } from '../events/entities/event.entity';
 
 @Injectable()
 export class ScentService {
   constructor(
     @InjectModel(Scent.name) private readonly scentModel: Model<Scent>,
+    @InjectConnection() private readonly connection: Connection,
+    @InjectModel(Event.name) private readonly eventModel: Model<Event>,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
@@ -44,5 +47,28 @@ export class ScentService {
   async remove(id: string) {
     const scent = await this.findOne(id);
     return scent.deleteOne();
+  }
+
+  async recommendScent(scent: Scent) {
+    const session = await this.connection.startSession();
+    session.startTransaction();
+
+    try {
+      scent.recommendations++;
+
+      const recommendEvent = new this.eventModel({
+        name: 'recommend_scent',
+        type: 'scent',
+        payload: { scentId: scent.id },
+      });
+      await recommendEvent.save({ session });
+      await scent.save({ session });
+
+      await session.commitTransaction();
+    } catch (err) {
+      await session.abortTransaction();
+    } finally {
+      session.endSession();
+    }
   }
 }
