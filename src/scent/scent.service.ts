@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { Scent } from './entities/scent.entity';
 import { CreateScentDto } from './dto/create-scent.dto';
 import { UpdateScentDto } from './dto/update-scent.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 
 @Injectable()
 export class ScentService {
@@ -11,8 +12,9 @@ export class ScentService {
     @InjectModel(Scent.name) private readonly scentModel: Model<Scent>,
   ) {}
 
-  findAll() {
-    return this.scentModel.find().exec();
+  findAll(paginationQuery: PaginationQueryDto) {
+    const { limit, offset } = paginationQuery;
+    return this.scentModel.find().skip(offset).limit(limit).exec();
   }
 
   async findOne(id: string) {
